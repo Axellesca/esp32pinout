@@ -1,0 +1,19 @@
+{
+  "name": "esp32pinout",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Interactive 3D ESP32 pinout explorer (ESP32 DevKit V1 and ESP-32S / NodeMCU-32S). Vanilla JS + Three.js, zero external 3D assets.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "verify:data": "node scripts/verify-data.mjs"
+  },
+  "dependencies": {
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.0"
+  }
+}

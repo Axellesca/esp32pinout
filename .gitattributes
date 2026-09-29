@@ -1,0 +1,12 @@
+# Normalize line endings in the repository, and keep text files text.
+# Without this, core.autocrlf=true on Windows rewrites every file's line
+# endings for anyone cloning on Linux or macOS.
+* text=auto eol=lf
+
+# Files that must stay binary.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.woff binary
+*.woff2 binary

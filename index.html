@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Explorador 3D de pinout ESP32</title>
+    <meta
+      name="description"
+      content="Explorador 3D interactivo de pinout para el ESP32 DevKit V1 y el ESP-32S / NodeMCU-32S, con capacidades y restricciones verificadas contra las fuentes."
+    />
+    <link rel="icon" href="data:," />
+  </head>
+  <body>
+    <div id="app">
+      <!-- 3D stage. The HUD never overlaps it: the stage is inset by the topbar
+           height and the sidebar width, so the board is always fully visible. -->
+      <div id="stage">
+        <div id="canvas-host"></div>
+        <div id="label-host"></div>
+        <div id="stage-overlay" aria-hidden="true">
+          <div id="hover-readout"></div>
+        </div>
+      </div>
+
+      <header id="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-text">
+            <strong>Explorador 3D de pinout ESP32</strong>
+            <small id="board-name">ESP32 DevKit V1</small>
+          </span>
+        </div>
+
+        <div class="topbar-group">
+          <label class="field">
+            <span>Placa</span>
+            <select id="board-select" aria-label="Placa"></select>
+          </label>
+          <label class="field">
+            <span>Serigrafía</span>
+            <select id="silk-select" aria-label="Convención de serigrafía"></select>
+          </label>
+        </div>
+
+        <div class="topbar-group" id="view-toggles" role="group" aria-label="Controles de vista">
+          <button type="button" data-view="top" class="toggle">Arriba</button>
+          <button type="button" data-view="bottom" class="toggle">Abajo</button>
+          <button type="button" data-view="explode" class="toggle">Explosión</button>
+          <button type="button" data-view="labels" class="toggle is-on">Etiquetas</button>
+          <button type="button" data-view="wifi" class="toggle">Wi-Fi activa</button>
+          <button type="button" data-view="reset" class="toggle">Restablecer vista</button>
+        </div>
+
+        <button
+          type="button"
+          id="sidebar-toggle"
+          class="sidebar-toggle"
+          aria-expanded="true"
+          aria-controls="sidebar"
+        >
+          Detalles
+        </button>
+      </header>
+
+      <aside id="sidebar" aria-label="Controles del explorador y detalle del pin">
+        <section class="panel" id="search-section">
+          <h2>Búsqueda</h2>
+          <input
+            id="search-input"
+            type="search"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="GPIO13, D13, A14, IO13, TX0, EN, 3V3, VP..."
+            aria-label="Buscar pines"
+          />
+          <p id="search-hint">
+            Acepta <code>GPIO13</code>, <code>IO13</code>, <code>D13</code>, <code>A14</code>,
+            <code>T4</code>, <code>TX0</code>, <code>EN</code>, <code>3V3</code>.
+          </p>
+          <ol id="search-results" class="results" aria-live="polite"></ol>
+        </section>
+
+        <section class="panel" id="filter-section">
+          <h2>Filtro de capacidades</h2>
+          <div id="filter-chips" class="chips" role="group" aria-label="Filtro de capacidades"></div>
+          <button type="button" id="filter-clear" class="link-button">Borrar todos los filtros</button>
+          <p class="legend-note">
+            Estos chips son filtros, no colores. El color de un pin codifica su
+            <strong>estado</strong> (ver la leyenda), nunca su capacidad. Al activar un chip, los
+            pines que no coinciden se atenúan y los que sí coinciden quedan iluminados.
+          </p>
+        </section>
+
+        <section class="panel" id="legend-section">
+          <h2>Leyenda</h2>
+          <p class="legend-lead">
+            Colores de los pines: cada pin lleva el color de su <strong>estado</strong>. No hay
+            ningún color por capacidad.
+          </p>
+          <ul id="legend-items" class="legend"></ul>
+          <p class="legend-note">
+            Cada estado lleva además un glifo (<code>!</code> strapping, <code>IN</code> solo
+            entrada, <code>X</code> flash, <code>~</code> ADC2 en conflicto) para que el color
+            nunca sea la única pista.
+          </p>
+        </section>
+
+        <section class="panel" id="panel-section">
+          <h2>Detalle del pin</h2>
+          <div id="pin-panel" data-pin="" class="pin-panel">
+            <p class="placeholder">Haz clic en cualquier pin del header 3D para inspeccionarlo.</p>
+          </div>
+        </section>
+
+        <section class="panel" id="board-section">
+          <h2>Notas de la placa</h2>
+          <div id="board-notes" class="board-notes"></div>
+        </section>
+      </aside>
+
+      <details id="sources-panel" class="sources">
+        <summary>Procedencia de los datos, correcciones y ambigüedades conocidas</summary>
+        <div id="sources-body" class="sources-body"></div>
+      </details>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
