@@ -316,6 +316,23 @@ Two further independent browser-verification passes ran against the production b
 - The topbar scrolls horizontally below 1000 px by design.
 - Header column-to-physical-edge rotation and exact PCB size remain unverified (see Provenance).
 
+## Git repository
+
+Initialised on branch `main` at the user's explicit request. Single initial commit:
+
+- `1056c05 feat: add interactive 3D pinout explorer` — 36 files, 9,240 insertions.
+
+`.gitignore` excludes `node_modules/`, `dist/` and editor/OS noise. `.gitattributes` pins
+`* text=auto eol=lf` because this machine has `core.autocrlf=true`, which would otherwise rewrite
+every file's line endings for anyone cloning on Linux or macOS.
+
+**This initial commit is one large work unit (~9,240 lines) and sits far above the ~400-line
+advisory review budget.** That is a deliberate, disclosed exception rather than an accident: the
+feature was built as a single delegated unit and the fixes that followed were interleaved in the
+same files, so any split into synthetic history would produce commits that do not build
+independently. If the user later wants PRs, the honest options are to accept a `size:exception` or
+to treat the first commit as a squashed base and review subsequent changes as normal slices.
+
 ## Verification method notes
 
 - Playwright `page.evaluate` runs in an **isolated world** and cannot see `window.__esp32Explorer`.
